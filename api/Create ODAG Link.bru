@@ -1,0 +1,56 @@
+meta {
+  name: Create ODAG Link
+  type: http
+  seq: 9
+}
+
+post {
+  url: https://8d1m74ejjtwuto3.us.qlikcloud.com/api/v1/odaglinks
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJFUzM4NCIsImtpZCI6Ijc0MDFkNjYyLTBjOTYtNGNhYy1iYjlmLTE1OWQyYmNhNDIyMCIsInR5cCI6IkpXVCJ9.eyJzdWJUeXBlIjoidXNlciIsInRlbmFudElkIjoiaUZYOEotVHJXcUdWSzlCel9RaW9URV9QdlJGSGl0RkkiLCJqdGkiOiI3NDAxZDY2Mi0wYzk2LTRjYWMtYmI5Zi0xNTlkMmJjYTQyMjAiLCJhdWQiOiJxbGlrLmFwaSIsImlzcyI6InFsaWsuYXBpL2FwaS1rZXlzIiwic3ViIjoiNjhlOTY3OGJlYjAzZTM4NWY2NzJjOTU2In0.fxh_4_wtjGZiYkyAEDigDeY4uedCXJXWoRrSOl3oLnmN2RC02MJKbgAvT4BRpYQLLerp-FQ64XL40PgywiXwszt14Q3Qjonbs8Oti4a_d3x0Stms3YHGcfN_A0JqT48R
+}
+
+body:json {
+  {
+    "id": "",
+    "name": "ODAG",
+    "selectionApp": "9d456848-c3d1-4be7-9150-874deba17c36",
+    "templateApp": "821a07c6-fcd4-4950-8cde-0626fd22503a",
+    "rowEstExpr": "COUNT(1)",
+    "privileges": [],
+    "properties": {
+      "rowEstRange": [
+        {
+          "context": "*",
+          "highBound": 100
+        }
+      ],
+      "genAppLimit": [
+        {
+          "context": "User_*",
+          "limit": 5
+        }
+      ],
+      "appRetentionTime": [
+        {
+          "context": "User_*",
+          "retentionTime": "P1D"
+        }
+      ],
+      "publishTo": [],
+      "targetSheet": [],
+      "overrideGenAppLimit": [
+        {
+          "context": "User_*",
+          "overrideGenAppLimit": false
+        }
+      ]
+    },
+    "tags": []
+  }
+  
+}
