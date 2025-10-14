@@ -4,11 +4,11 @@ set -euo pipefail
 ################################
 # DEFAULT VALUES (can be overridden by args)
 ################################
-DEV_CONTEXT="dante"
-PROD_CONTEXT="prod"
+SRC_CONTEXT="dante"
+DST_CONTEXT="prod"
 SELECTION_NAME="selector odag"
 TEMPLATE_NAME="template"
-LINK_NAME="dante"
+LINK_NAME="Hello World"
 SHEET_TITLE="My new sheet (1)"
 BUTTON_QID="qpHx"
 ODAG_TEMPLATE_FILE="odag_create_template.json"
@@ -19,8 +19,8 @@ DEBUG=false
 ################################
 while [ $# -gt 0 ]; do
   case "$1" in
-    --dev-context) DEV_CONTEXT="$2"; shift 2 ;;
-    --prod-context) PROD_CONTEXT="$2"; shift 2 ;;
+    --src-context) SRC_CONTEXT="$2"; shift 2 ;;
+    --dst-context) DST_CONTEXT="$2"; shift 2 ;;
     --selection-name) SELECTION_NAME="$2"; shift 2 ;;
     --template-name) TEMPLATE_NAME="$2"; shift 2 ;;
     --link-name) LINK_NAME="$2"; shift 2 ;;
@@ -28,11 +28,11 @@ while [ $# -gt 0 ]; do
     --button-id) BUTTON_QID="$2"; shift 2 ;; --template-file) ODAG_TEMPLATE_FILE="$2"; shift 2 ;;
     --debug) DEBUG=true; shift 1 ;;
     --help)
-      echo "Usage: $0 [options]"
+      echo "Uso: $0 [options]"
       echo
-      echo "Options:"
-      echo "  --dev-context <name>"
-      echo "  --prod-context <name>"
+      echo "Opções:"
+      echo "  --src-context <name>"
+      echo "  --dst-context <name>"
       echo "  --selection-name <app_name>"
       echo "  --template-name <app_name>"
       echo "  --link-name <string>"
@@ -44,7 +44,7 @@ while [ $# -gt 0 ]; do
       exit 0
       ;;
     *)
-      echo "Unknown option: $1"
+      echo "Opção desconhecida: $1"
       exit 1
       ;;
   esac
@@ -69,7 +69,7 @@ error_exit() {
 }
 
 check_dep() {
-  command -v "$1" >/dev/null 2>&1 || error_exit "Command '$1' not found."
+  command -v "$1" >/dev/null 2>&1 || error_exit "Comando '$1' não encontrado."
 }
 
 ################################
@@ -82,46 +82,46 @@ done
 ################################
 # MAIN PROCESS
 ################################
-log "Switching to development context: $DEV_CONTEXT"
-qlik context use "$DEV_CONTEXT"
+log "Mudando o contexto para fonte: $SRC_CONTEXT"
+qlik context use "$SRC_CONTEXT"
 
-log "Exporting ODAG selection app: $SELECTION_NAME"
+log "Exportando ODAG selection app: $SELECTION_NAME"
 SEL_APP_ID=$(qlik app ls --quiet --name "$SELECTION_NAME" | awk '{print $1}')
-[ -z "$SEL_APP_ID" ] && error_exit "No app found with name '$SELECTION_NAME'"
-debug "Found selection app ID: $SEL_APP_ID"
+[ -z "$SEL_APP_ID" ] && error_exit "Nenhum aplicativo encontrado com nome: '$SELECTION_NAME'"
+debug "Seleção encontrada app ID: $SEL_APP_ID"
 qlik app export "$SEL_APP_ID" --output-file ./files/selection.qvf
 
-log "Exporting ODAG template app: $TEMPLATE_NAME"
+log "Exportando ODAG template app: $TEMPLATE_NAME"
 TMP_APP_ID=$(qlik app ls --quiet --name "$TEMPLATE_NAME" | awk '{print $1}')
-[ -z "$TMP_APP_ID" ] && error_exit "No app found with name '$TEMPLATE_NAME'"
-debug "Found template app ID: $TMP_APP_ID"
+[ -z "$TMP_APP_ID" ] && error_exit "Nenhum aplicativo encontrado com nome: '$TEMPLATE_NAME'"
+debug "Template encontrado app ID: $TMP_APP_ID"
 qlik app export "$TMP_APP_ID" --output-file ./files/template.qvf
 
-log "Switching to production context: $PROD_CONTEXT"
-qlik context use "$PROD_CONTEXT"
+log "Mudando o contexto para destino: $DST_CONTEXT"
+qlik context use "$DST_CONTEXT"
 
-log "Importing selection.qvf"
+log "Importando selection.qvf"
 APP=$(qlik app import --file files/selection.qvf --quiet)
-[ -z "$APP" ] && error_exit "Failed to import selection.qvf"
-debug "Imported selection app as ID: $APP"
+[ -z "$APP" ] && error_exit "Falha na importação de selection.qvf"
+debug "App de seleção importado como ID: $APP"
 
-log "Importing template.qvf"
+log "Importando template.qvf"
 TEMPLATE=$(qlik app import --file files/template.qvf --quiet)
 [ -z "$TEMPLATE" ] && error_exit "Failed to import template.qvf"
-debug "Imported template app as ID: $TEMPLATE"
+debug "Template importado como ID: $TEMPLATE"
 
-log "Locating sheet with title: $SHEET_TITLE"
+log "Procurando pasta com o nome: $SHEET_TITLE"
 SHEET=$(qlik app object ls --app "$APP" --verbose --json |
   jq -r --arg title "$SHEET_TITLE" '.[] | select(.qType=="sheet" and .title==$title) | .qId')
 
-[ -z "$SHEET" ] && error_exit "No sheet found with title '$SHEET_TITLE'"
-debug "Found sheet ID: $SHEET"
+[ -z "$SHEET" ] && error_exit "Nenhuma pasta encontrada com '$SHEET_TITLE'"
+debug "Pasta encontrada com ID: $SHEET"
 
-log "Unpublishing sheet $SHEET"
+log "Despublicando a pasta de ID $SHEET"
 qlik app object unpublish "$SHEET" --app "$APP"
 
-log "Editing ODAG template file: $ODAG_TEMPLATE_FILE"
-[ ! -f "$ODAG_TEMPLATE_FILE" ] && error_exit "File '$ODAG_TEMPLATE_FILE' not found."
+log "Modificando o arquivo de template ODAG: $ODAG_TEMPLATE_FILE"
+[ ! -f "$ODAG_TEMPLATE_FILE" ] && error_exit "Arquivo '$ODAG_TEMPLATE_FILE' não encontrado."
 
 TMPFILE=$(mktemp)
 jq --arg sApp "$APP" \
@@ -131,38 +131,38 @@ jq --arg sApp "$APP" \
    "$ODAG_TEMPLATE_FILE" > "$TMPFILE"
 mv "$TMPFILE" "$ODAG_TEMPLATE_FILE"
 
-log "Creating ODAG link..."
+log "Criando o link ODAG..."
 ODAGLINKREF=$(qlik raw post /v1/odaglinks --body-file "$ODAG_TEMPLATE_FILE" -q)
-[ -z "$ODAGLINKREF" ] && error_exit "Failed to create ODAG link"
-debug "ODAG link reference: $ODAGLINKREF"
+[ -z "$ODAGLINKREF" ] && error_exit "ODAG link falhou na criação"
+debug "O ID do link ODAG: $ODAGLINKREF"
 
-log "Retrieving sheet object data"
+log "Armazenando os dados da pasta"
 qlik app object properties "$SHEET" --app "$APP" > tmp_sheet_data.json
 
-log "Retrieving button object data (QID: $BUTTON_QID)"
+log "Armazenando os dados do botão (QID: $BUTTON_QID)"
 qlik app object properties "$BUTTON_QID" --app "$APP" > tmp_button_data.json
 
-log "Updating button with ODAG reference"
+log "Modificando o botão com a nova referência do ODAG"
 TMPFILE=$(mktemp)
 jq --arg odag "$ODAGLINKREF" \
    '.qMetaDef.odagLinkRef=$odag' \
    tmp_button_data.json > "$TMPFILE"
 mv "$TMPFILE" tmp_button_data.json
 
-log "Updating sheet navPoints"
+log "Modificando os navPoints da pasta"
 TMPFILE=$(mktemp)
 jq --arg odag "$ODAGLINKREF" --arg name "$LINK_NAME" \
    '.navPoints[0].odagLinkRefID=$odag | .navPoints[0].title=$name' \
    tmp_sheet_data.json > "$TMPFILE"
 mv "$TMPFILE" tmp_sheet_data.json
 
-log "Applying updated button object"
+log "Aplicando modificações no botão..."
 qlik app object set ./tmp_button_data.json --app "$APP"
 
-log "Applying updated sheet object"
+log "Aplicando modificação na pasta..."
 qlik app object set ./tmp_sheet_data.json --app "$APP"
 
-log "Publishing sheet $SHEET"
+log "Publicando pasta $SHEET"
 qlik app object publish "$SHEET" --app "$APP"
 
-log "Done! ✅"
+log "Pronto! ✅"
