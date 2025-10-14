@@ -1,0 +1,37 @@
+{
+  "id": "",
+  "name": "dante",
+  "selectionApp": "69623f0c-427c-42eb-b4fe-eb4db3f934a4",
+  "templateApp": "3bb52875-6a0b-468a-93c0-27f95fd54810",
+  "rowEstExpr": "COUNT(1)",
+  "privileges": [],
+  "properties": {
+    "rowEstRange": [
+      {
+        "context": "*",
+        "highBound": 100
+      }
+    ],
+    "genAppLimit": [
+      {
+        "context": "User_*",
+        "limit": 5
+      }
+    ],
+    "appRetentionTime": [
+      {
+        "context": "User_*",
+        "retentionTime": "P1D"
+      }
+    ],
+    "publishTo": [],
+    "targetSheet": [],
+    "overrideGenAppLimit": [
+      {
+        "context": "User_*",
+        "overrideGenAppLimit": false
+      }
+    ]
+  },
+  "tags": []
+}

@@ -1,0 +1,81 @@
+{
+  "qInfo": {
+    "qId": "108b5090-d9ab-4642-859a-d9c8cd5c7d75",
+    "qType": "sheet"
+  },
+  "qMetaDef": {
+    "title": "My new sheet (1)",
+    "description": ""
+  },
+  "creationDate": "2025-10-10T21:31:34.135Z",
+  "rank": 1,
+  "thumbnail": {
+    "qStaticContentUrlDef": {}
+  },
+  "columns": 24,
+  "rows": 12,
+  "cells": [
+    {
+      "name": "fbdb6ad5-9854-44d6-bd75-d27ff50902dc",
+      "type": "barchart",
+      "col": 0,
+      "row": 0,
+      "colspan": 12,
+      "rowspan": 6,
+      "bounds": {
+        "y": 0,
+        "x": 0,
+        "width": 50,
+        "height": 50
+      }
+    },
+    {
+      "name": "c967af95-a481-411d-83b4-cf53d244ef1c",
+      "type": "linechart",
+      "col": 12,
+      "row": 0,
+      "colspan": 12,
+      "rowspan": 6,
+      "bounds": {
+        "y": 0,
+        "x": 50,
+        "width": 50,
+        "height": 50
+      }
+    },
+    {
+      "name": "PuePsz",
+      "type": "sn-text",
+      "col": 0,
+      "row": 6,
+      "colspan": 12,
+      "rowspan": 6,
+      "bounds": {
+        "y": 50,
+        "x": 0,
+        "width": 50,
+        "height": 50
+      }
+    }
+  ],
+  "customRowBase": 12,
+  "gridResolution": "small",
+  "layoutOptions": {
+    "mobileLayout": "LIST"
+  },
+  "qChildListDef": {
+    "qData": {
+      "title": "/title"
+    }
+  },
+  "navPoints": [
+    {
+      "info": {
+        "id": "xynstj"
+      },
+      "title": "dante",
+      "odagLinkRefID": "68edb3a5c99f41f9809363f1"
+    }
+  ],
+  "gridMode": "edit"
+}
