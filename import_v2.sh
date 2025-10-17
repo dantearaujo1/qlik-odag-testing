@@ -19,6 +19,7 @@ INLOCO=false
 SRC_ENV="cloud"
 DST_ENV="cloud"
 STREAM="aaec8d41-5201-43ab-809f-3063750dfafd"
+SERVER="v220d002003.prevnet"
 
 #CONFIG VALUES
 DATA_DIR="files"
@@ -26,7 +27,7 @@ CFG_DIR=".config"
 TMP_DIR="tmp"
 
 # SESSION CURL REQUEST INFORMATION
-COOKIE="X-Qlik-Session=13e7fff9-968a-4cad-9dc9-35a3bd1df341" # A forma é igual tem nos cookies do navegador X-Qlik-Session=xxxxxxxxx
+COOKIE="X-Qlik-Session=15f4027e-5f0c-45f0-8a20-77e8efdeb6eb" # A forma é igual tem nos cookies do navegador X-Qlik-Session=xxxxxxxxx
 XRFKEY="ZkmESpgNhziutMmb"
 
 ################################
@@ -198,7 +199,12 @@ log "Criando o link ODAG..."
 if [[ $DST_ENV = "cloud" ]]; then
   ODAGLINKREF=$(qlik raw post /v1/odaglinks --body-file "$ODAG_TEMPLATE_FILE" -q)
 else
-  ODAGLINKREF=$(curl --location -k --request POST "https://v220d002003.prevnet/api/odag/v1/links?xrfkey=${XRFKEY}" \
+
+  curl -v -L --ntlm --negotiate -u x-qlik-xrfkey: 0123456789abcdef" --header "User-Agent: Windows" -c "tmp/cookie.txt"
+
+  COOKIE=$(grep 'X-Qlik-Session' $TMP_DIR/cookie.txt | awk '{print $7}'))
+
+  ODAGLINKREF=$(curl --location -k --request POST "https://$SERVER/api/odag/v1/links?xrfkey=${XRFKEY}" \
       -H "Cookie: ${COOKIE}" \
       -H "X-Qlik-Xrfkey:${XRFKEY}" \
       -H "Content-Type: application/json" \
