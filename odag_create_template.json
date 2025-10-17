@@ -1,15 +1,14 @@
 {
   "id": "",
-  "name": "dante",
-  "selectionApp": "69623f0c-427c-42eb-b4fe-eb4db3f934a4",
-  "templateApp": "3bb52875-6a0b-468a-93c0-27f95fd54810",
+  "name": "ODAG HELLO",
+  "templateApp": "9f3720e6-d77f-4d5f-b1d2-9754ee7f84ea",
   "rowEstExpr": "COUNT(1)",
   "privileges": [],
   "properties": {
     "rowEstRange": [
       {
         "context": "*",
-        "highBound": 100
+        "highBound": 1000
       }
     ],
     "genAppLimit": [
@@ -21,11 +20,16 @@
     "appRetentionTime": [
       {
         "context": "User_*",
-        "retentionTime": "P1D"
+        "retentionTime": "unlimited"
       }
     ],
     "publishTo": [],
-    "targetSheet": [],
+    "targetSheet": [
+      {
+        "context": "User_*",
+        "sheetId": ""
+      }
+    ],
     "overrideGenAppLimit": [
       {
         "context": "User_*",
@@ -33,5 +37,6 @@
       }
     ]
   },
-  "tags": []
+  "tags": [],
+  "selectionApp": "94b383bf-ef7a-45f0-a273-a29164342737"
 }
