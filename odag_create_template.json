@@ -1,7 +1,7 @@
 {
   "id": "",
   "name": "ODAG HELLO",
-  "templateApp": "9f3720e6-d77f-4d5f-b1d2-9754ee7f84ea",
+  "templateApp": "21b0d41e-4d6a-45a3-ab2a-e8ecc010fa72",
   "rowEstExpr": "COUNT(1)",
   "privileges": [],
   "properties": {
@@ -38,5 +38,5 @@
     ]
   },
   "tags": [],
-  "selectionApp": "94b383bf-ef7a-45f0-a273-a29164342737"
+  "selectionApp": "f7538466-ad3e-4d95-b33b-31de5a950afd"
 }

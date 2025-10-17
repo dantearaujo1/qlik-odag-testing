@@ -189,8 +189,8 @@ jq --arg sApp "$APP" \
    --arg tApp "$TEMPLATE" \
    --arg lName "$LINK_NAME" \
    '.name=$lName | .selectionApp=$sApp | .templateApp=$tApp' \
-   "$ODAG_TEMPLATE_FILE" > "$TMP_DIR/$TMPFILE"
-mv "$TMP_DIR/$TMPFILE" "$ODAG_TEMPLATE_FILE"
+   "$ODAG_TEMPLATE_FILE" > "$TMPFILE"
+mv "$TMPFILE" "$ODAG_TEMPLATE_FILE"
 
 debug $(cat $ODAG_TEMPLATE_FILE)
 
@@ -210,9 +210,9 @@ debug "O ID do link ODAG: $ODAGLINKREF"
 
 log "Armazenando os dados da pasta"
 if [[ $DST_ENV = "cloud" ]]; then
-  qlik app object properties "$SHEET" --app "$APP" > tmp_sheet_data.json
+  qlik app object properties "$SHEET" --app "$APP" > $TMP_DIR/tmp_sheet_data.json
 else
-  qlik app object properties "$SHEET" --app "$APP" > tmp_sheet_data.json --insecure
+  qlik app object properties "$SHEET" --app "$APP" > $TMP_DIR/tmp_sheet_data.json --insecure
 fi
 
 log "Armazenando os dados do botão (QID: $BUTTON_QID)"
